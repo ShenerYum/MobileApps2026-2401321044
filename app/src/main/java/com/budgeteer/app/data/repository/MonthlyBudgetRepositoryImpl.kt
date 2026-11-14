@@ -30,6 +30,10 @@ class MonthlyBudgetRepositoryImpl @Inject constructor(
         return monthlyBudgetDao.getMostRecentMonthlyBudget()?.toDomain()
     }
 
+    override suspend fun getEarliestMonthlyBudget(): MonthlyBudget? {
+        return monthlyBudgetDao.getEarliestMonthlyBudget()?.toDomain()
+    }
+
     override suspend fun saveMonthlyBudget(monthlyBudget: MonthlyBudget): Long {
         val insertedId = monthlyBudgetDao.insertMonthlyBudget(monthlyBudget.toEntity())
         return if (insertedId == -1L) {

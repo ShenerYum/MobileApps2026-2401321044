@@ -30,6 +30,9 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE id = :id LIMIT 1")
     suspend fun getTransactionById(id: Long): TransactionEntity?
 
+    @Query("SELECT * FROM transactions ORDER BY transactionTimestampEpochMs ASC LIMIT 1")
+    suspend fun getEarliestTransaction(): TransactionEntity?
+
     @Query("SELECT * FROM transactions ORDER BY transactionTimestampEpochMs DESC")
     fun observeAllTransactions(): Flow<List<TransactionEntity>>
 

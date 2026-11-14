@@ -8,6 +8,7 @@ interface MonthlyBudgetRepository {
     fun observeMonthlyBudget(period: YearMonth): Flow<MonthlyBudget?>
     suspend fun getMonthlyBudget(period: YearMonth): MonthlyBudget?
     suspend fun getMostRecentMonthlyBudget(): MonthlyBudget?
+    suspend fun getEarliestMonthlyBudget(): MonthlyBudget?
     suspend fun saveMonthlyBudget(monthlyBudget: MonthlyBudget): Long
     suspend fun updateMonthlyBudget(monthlyBudget: MonthlyBudget)
 }
