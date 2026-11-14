@@ -25,6 +25,9 @@ interface MonthlyBudgetDao {
     @Query("SELECT * FROM monthly_budgets ORDER BY year DESC, month DESC LIMIT 1")
     suspend fun getMostRecentMonthlyBudget(): MonthlyBudgetEntity?
 
+    @Query("SELECT * FROM monthly_budgets ORDER BY year ASC, month ASC LIMIT 1")
+    suspend fun getEarliestMonthlyBudget(): MonthlyBudgetEntity?
+
     @Query("SELECT * FROM monthly_budgets WHERE isClosed = 0 ORDER BY year ASC, month ASC")
     suspend fun getUnclosedMonthlyBudgets(): List<MonthlyBudgetEntity>
 

@@ -12,6 +12,8 @@ import com.budgeteer.app.domain.repository.MonthlyBudgetRepository
 import com.budgeteer.app.domain.repository.SavingsTransferRepository
 import com.budgeteer.app.domain.repository.TransactionRepository
 import com.budgeteer.app.domain.repository.UserSettingsRepository
+import com.budgeteer.app.data.repository.FinancialTransactionRunnerImpl
+import com.budgeteer.app.domain.repository.FinancialTransactionRunner
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,4 +47,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindUserSettingsRepository(impl: UserSettingsRepositoryImpl): UserSettingsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFinancialTransactionRunner(impl: FinancialTransactionRunnerImpl): FinancialTransactionRunner
 }

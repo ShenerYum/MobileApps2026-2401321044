@@ -9,6 +9,7 @@ interface TransactionRepository {
     fun observeTransactionsByMonth(period: YearMonth): Flow<List<Transaction>>
     suspend fun getTransactionsByMonth(period: YearMonth): List<Transaction>
     suspend fun getTransactionById(id: Long): Transaction?
+    suspend fun getEarliestTransaction(): Transaction?
     suspend fun insertTransaction(transaction: Transaction): Long
     suspend fun updateTransaction(transaction: Transaction)
     suspend fun deleteTransaction(id: Long)

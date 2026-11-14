@@ -36,6 +36,10 @@ class TransactionRepositoryImpl @Inject constructor(
         return transactionDao.getTransactionById(id)?.toDomain()
     }
 
+    override suspend fun getEarliestTransaction(): Transaction? {
+        return transactionDao.getEarliestTransaction()?.toDomain()
+    }
+
     override suspend fun insertTransaction(transaction: Transaction): Long {
         return transactionDao.insertTransaction(transaction.toEntity())
     }
