@@ -37,7 +37,11 @@ class MonthlyBudgetRepositoryImpl @Inject constructor(
     override suspend fun saveMonthlyBudget(monthlyBudget: MonthlyBudget): Long {
         val insertedId = monthlyBudgetDao.insertMonthlyBudget(monthlyBudget.toEntity())
         return if (insertedId == -1L) {
-            monthlyBudgetDao.getMonthlyBudget(monthlyBudget.period.year, monthlyBudget.period.monthValue)?.id ?: -1L
+            val existing = monthlyBudgetDao.getMonthlyBudget(monthlyBudget.period.year, monthlyBudget.period.monthValue)
+            val createdAt = existing?.createdAtEpochMs ?: System.currentTimeMillis()
+            val budgetToUpdate = monthlyBudget.copy(id = existing?.id ?: 0L)
+            monthlyBudgetDao.updateMonthlyBudget(budgetToUpdate.toEntity(createdAtEpochMs = createdAt))
+            existing?.id ?: -1L
         } else {
             insertedId
         }

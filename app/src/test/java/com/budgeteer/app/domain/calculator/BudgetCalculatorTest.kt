@@ -100,6 +100,23 @@ class BudgetCalculatorTest {
         assertEquals(BigDecimal("1000.00"), newCurrent2.amount)
     }
 
+    @Test
+    fun testBaseBudgetChangeFormulaAndNegativeUsableBudget() {
+        val oldBase = Money.eur(BigDecimal("1000.00"))
+        val currentUsable = Money.eur(BigDecimal("750.00"))
+
+        // Example 1: Base budget 1000 -> 1500, usable budget 750 -> 1250 (usable + newBase - oldBase)
+        val newBase1500 = Money.eur(BigDecimal("1500.00"))
+        val newUsable1250 = BudgetCalculator.calculateNewCurrentBudget(currentUsable, oldBase, newBase1500)
+        assertEquals(BigDecimal("1250.00"), newUsable1250.amount)
+
+        // Example 2: Base budget decreases to 200 -> usable budget = 750 + 200 - 1000 = -50 (negative usable budget)
+        val newBase200 = Money.eur(BigDecimal("200.00"))
+        val newUsableNegative = BudgetCalculator.calculateNewCurrentBudget(currentUsable, oldBase, newBase200)
+        assertEquals(BigDecimal("-50.00"), newUsableNegative.amount)
+        org.junit.Assert.assertTrue(newUsableNegative.isNegative)
+    }
+
     @Test(expected = PeriodMismatchException::class)
     fun testTransactionsFromAnotherPeriodAreRejected() {
         val wrongPeriod = YearMonth.of(2026, 4)
