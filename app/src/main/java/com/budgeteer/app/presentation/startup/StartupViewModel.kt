@@ -16,8 +16,7 @@ sealed interface StartupUiState {
     data class Error(val message: String) : StartupUiState
 }
 
-@HiltViewModel
-class StartupViewModel @Inject constructor(
+class StartupViewModel(
     private val processPendingMonthlyPeriodsUseCase: ProcessPendingMonthlyPeriodsUseCase
 ) : ViewModel() {
 
