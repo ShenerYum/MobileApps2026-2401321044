@@ -14,6 +14,13 @@ import com.budgeteer.app.domain.usecase.ProcessPendingMonthlyPeriodsUseCase
 import com.budgeteer.app.domain.usecase.RecalculateClosedMonthUseCase
 import com.budgeteer.app.domain.usecase.UpdateTransactionWorkflowUseCase
 import com.budgeteer.app.domain.usecase.ValidateTransactionUseCase
+import com.budgeteer.app.domain.usecase.analytics.GetAnalyticsDashboardUseCase
+import com.budgeteer.app.domain.usecase.analytics.GetCategoryBreakdownUseCase
+import com.budgeteer.app.domain.usecase.analytics.GetCategoryInsightsUseCase
+import com.budgeteer.app.domain.usecase.analytics.GetFinancialOverviewUseCase
+import com.budgeteer.app.domain.usecase.analytics.GetIncomeExpenseTrendsUseCase
+import com.budgeteer.app.domain.usecase.analytics.GetPeriodComparisonUseCase
+import com.budgeteer.app.presentation.analytics.AnalyticsViewModel
 import com.budgeteer.app.presentation.categories.CategoriesViewModel
 import com.budgeteer.app.presentation.dashboard.DashboardViewModel
 import com.budgeteer.app.presentation.savings.SavingsViewModel
@@ -77,6 +84,25 @@ inline fun <reified VM : ViewModel> injectViewModel(): VM {
                         container.transactionRepository,
                         container.categoryRepository,
                         deleteTxWorkflow
+                    ) as T
+                }
+                modelClass.isAssignableFrom(AnalyticsViewModel::class.java) -> {
+                    val overviewUseCase = GetFinancialOverviewUseCase(container.transactionRepository)
+                    val comparisonUseCase = GetPeriodComparisonUseCase(overviewUseCase)
+                    val trendsUseCase = GetIncomeExpenseTrendsUseCase(container.transactionRepository)
+                    val breakdownUseCase = GetCategoryBreakdownUseCase(container.transactionRepository, container.categoryRepository)
+                    val insightsUseCase = GetCategoryInsightsUseCase(breakdownUseCase)
+                    val analyticsDashboardUseCase = GetAnalyticsDashboardUseCase(
+                        overviewUseCase,
+                        comparisonUseCase,
+                        trendsUseCase,
+                        breakdownUseCase,
+                        insightsUseCase
+                    )
+                    AnalyticsViewModel(
+                        analyticsDashboardUseCase,
+                        container.clock,
+                        container.zoneId
                     ) as T
                 }
                 modelClass.isAssignableFrom(TransactionFormViewModel::class.java) -> {
