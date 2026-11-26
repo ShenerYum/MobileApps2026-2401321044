@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.budgeteer.app.presentation.analytics.AnalyticsScreen
 import com.budgeteer.app.presentation.categories.CategoriesScreen
 import com.budgeteer.app.presentation.common.components.ErrorState
 import com.budgeteer.app.presentation.common.components.LoadingState
@@ -114,6 +115,9 @@ private fun MainNavigationScaffold() {
             }
             composable(Screen.Transactions.route) {
                 TransactionsScreen()
+            }
+            composable(Screen.Analytics.route) {
+                AnalyticsScreen()
             }
             composable(Screen.Savings.route) {
                 SavingsScreen()
